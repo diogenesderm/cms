@@ -10,8 +10,7 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -19,6 +18,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    @yield('css')
 </head>
 
 <body>
@@ -82,15 +83,41 @@
                     {{ session()->get('success') }}
                 </div>
                 @endif
+
+                @if(session()->has('error'))
+                <div class="alert alert-danger">
+                    {{ session()->get('error') }}
+                </div>
+                @endif
+
+                @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
                 <div class="row">
                     <div class="col-md-4">
                         <ul class="lis-group">
                             <li class="list-group-item">
                                 <a href="{{route('posts.index')}}">Posts</a>
                             </li>
+                            
                             <li class="list-group-item">
                                 <a href="{{ route('categories.index') }}">Categories</a>
                             </li>
+                        </ul>
+
+
+                         <ul class="lis-group mt-5">
+                          
+                             <li class="list-group-item">
+                                <a href="{{route('trashed-posts.index')}}">Trashed Posts</a>
+                            </li>
+                          
                         </ul>
                     </div>
                     <div class="col-md-8">
@@ -108,6 +135,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
 
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" ></script>
     @yield('scripts');
 
 </body>

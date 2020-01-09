@@ -13,9 +13,11 @@
     </div>
 
     <div class="card-body">
+        @if($categories->count() > 0)
         <table class="table">
             <thead>
                 <th>Name</th>
+                <th>Posts Count</th>
                 <th></th>
             </thead>
             <tbody>
@@ -24,6 +26,7 @@
                     <td>
                         {{ $category->name }}
                     </td>
+                    <td>{{ $category->posts()->count() }}</td>
                     <td>
                         <a href="{{ route('categories.edit',$category->id) }}" class="btn btn-info btn-sm">Edit</a>
                         <button onclick="handleDelete({{ $category->id }})" class="gtn btn-danger btn-sm">Delete</button>
@@ -59,6 +62,9 @@
                 </div>
             </div>
         </form>
+        @else
+            <h3>Nao ha categorias</h3>
+        @endif
     </div>
 </div>
 
