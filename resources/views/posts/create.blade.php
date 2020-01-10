@@ -7,6 +7,7 @@
        {{ isset($post) ? 'Edit post ': ' Create Post'}}
     </div>
     <div class="card-body">
+      @include('partials.erros')
       <form action="{{ isset($post) ? route('posts.update',$post->id) : route('posts.store')  }}" method="POST" enctype="multipart/form-data">
         @csrf
         
@@ -37,7 +38,7 @@
 
           @if(isset($post))
           <div class="form-group">
-          <img src="{{asset('storage/'.$post->image)}}" alt="" style="width:100%">
+          <img src="{{asset('storage/'.$post->image)}}" alt="" style="width:60px;height:60px">
           </div>
           @endif
           <div class="form-group">
@@ -46,9 +47,9 @@
           </div>
 
           <div class="form-group">
-            <label for="category">Category</label>
+            <label for="category">Categorysss</label>
             <select name="category" id="category" class="form-control">
-              <option value="">Select Category</option>
+              <option value="">Select Categoryssss</option>
 
               @foreach ($categories as $category)
             <option value="{{ $category->id }}"
@@ -63,8 +64,28 @@
               @endforeach
             </select>
           </div>
+
+          @if($tags->count() > 0)
+            <div class="form-group">
+              <label for="tags">Tags</label>
+              <select name="tags[]" id="tags" class="form-control" multiple>
+
+              @foreach($tags as $tag)
+              <option value="{{$tag->id}}"
+               @if(isset($post))
+                  @if($post->hasTag($tag->id))
+                    selected
+                  @endif
+               @endif
+                
+                >{{$tag->name}}</option>
+              @endforeach
+
+              </select>
+            </div>
+          @endif
           <div class="form-group">
-            <button type="submit" class="btn btn-success"> {{ isset($post) ? 'Edit post ': ' Create Post'}}</button>
+            <button type="submit" class="btn btn-success"> {{ isset($post) ? 'Edit post ': ' Create Postaaaaa'}}</button>
           </div>
           
       </form>

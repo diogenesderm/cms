@@ -6,13 +6,14 @@ use App\Category;
 use App\Http\Requests\Post\CreatePostRequest;
 use App\Http\Requests\Post\UpdatePostRequest;
 use App\Post;
+use App\Tags;
 
 class PostController extends Controller
 {
 
     public function __construct()
     {
-        $this->middleware("vefiryCategoriesCount")->only(['create','store']);
+        $this->middleware("vefiryCategoriesCount")->only(['create', 'store']);
     }
     /**
      * Undocumented function
@@ -26,7 +27,8 @@ class PostController extends Controller
 
     public function create()
     {
-        return view('posts.create')->with('categories', Category::all());
+
+        return view('posts.create')->with('categories', Category::all())->with('tags', Tags::all());
     }
 
     /**
@@ -37,9 +39,10 @@ class PostController extends Controller
      */
     public function store(CreatePostRequest $request)
     {
+
         $image = $request->image->store('posts');
 
-        Post::create([
+        $post = Post::create([
             'title' => $request->title,
             'description' => $request->description,
             'content' => $request->content,
@@ -47,6 +50,10 @@ class PostController extends Controller
             'category_id' => $request->category,
             'published_at' => $request->published_at
         ]);
+
+        if ($request->tags) {
+            $post->tag()->attach($request->tags);
+        }
 
         session()->flash('success', 'Post Created successfully');
 
@@ -86,7 +93,8 @@ class PostController extends Controller
 
     public function edit(Post $post)
     {
-        return view('posts.create')->with('post', $post)->with('categories', Category::all());
+
+        return view('posts.create')->with('post', $post)->with('categories', Category::all())->with('tags', Tags::all());
     }
 
     public function update(UpdatePostRequest $request, Post $post)
@@ -102,7 +110,9 @@ class PostController extends Controller
 
             $data['image'] = $image;
         }
-
+        if ($request->tags) {
+            $post->tag()->sync($request->tags);
+        }
         $post->update($data);
 
         session()->flash('success', 'Post updated sucessfully');
@@ -115,7 +125,7 @@ class PostController extends Controller
         $post = Post::withTrashed()->where('id', $postId)->firstOrFail();
         $post->restore();
 
-        session()->flash('success','Posts restored successfully');
+        session()->flash('success', 'Posts restored successfully');
 
         return redirect()->back();
     }

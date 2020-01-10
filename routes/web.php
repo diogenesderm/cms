@@ -14,13 +14,17 @@
 
 
 
-Route::middleware(['auth'])->group(function () {
 
-    Auth::routes();
+
+Auth::routes();
+
+Route::middleware(['auth'])->group(function () {
 
     Route::get('/', 'HomeController@index')->name('home');
 
     Route::resource('categories', 'Categorycontroller');
+
+    Route::resource('tags', 'TagsController');
 
     Route::resource('posts', 'PostController')->middleware(['auth']);
 
