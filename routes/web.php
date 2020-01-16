@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Blog\PostsController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,9 +20,13 @@
 
 Auth::routes();
 
+Route::get('/', 'WelcomeController@index');
+
+Route::get('/blog/posts/{post}', [PostsController::class,'show'])->name('blog.show');
+
 Route::middleware(['auth'])->group(function () {
 
-    Route::get('/', 'HomeController@index')->name('home');
+    Route::get('/home', 'HomeController@index')->name('home');
 
     Route::resource('categories', 'Categorycontroller');
 
@@ -31,4 +37,17 @@ Route::middleware(['auth'])->group(function () {
     Route::get('trashed-posts', 'PostController@trashed')->name('trashed-posts.index');
 
     Route::put('restore-post{post}', 'PostController@restore')->name('restore-posts');
+});
+
+Route::get('/users', 'UserController@index')->name('users');
+
+Route::get('/users/edit', 'UserController@edit')->name('edit');
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/users', 'UserController@index')->name('users');
+    Route::get('users/profile', 'Usercontroller@edit')->name('users.edit-profile');
+
+
+    Route::put('users/profile', 'UserController@update')->name('users.update-profile');
+    Route::post('/users/{user}/make-admin', 'UserController@makeAdmin')->name('users.make-admin');
 });

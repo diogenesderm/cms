@@ -1,7 +1,7 @@
 @extends('layouts.app');
 
 @section('content')
-   
+
 <div class="d-flex justify-content-end mb-2">
 <a class="btn btn-success" href="{{ route('posts.create')}}">Create Posts</a>
 </div>
@@ -23,7 +23,7 @@
                     @foreach ($posts as $post)
                     <tr>
                         <td>
-                         <img width="60px" height="60px" src="{{ url('storage/'.$post->image) }}" alt=""> 
+                         <img width="60px" height="60px" src="{{ url('storage/app/'.$post->image) }}" alt="">
                         </td>
                         <td>
                             {{ $post->title }}
@@ -52,7 +52,7 @@
                             @csrf
                             @method('DELETE')
                             <button type="submit"  class="btn btn-danger">
-                              {{ $post->trashed() ? 'Delete' : 'Trash'}}  
+                              {{ $post->trashed() ? 'Delete' : 'Trash'}}
                             </button>
                         </form>
                         </td>
@@ -62,7 +62,7 @@
                 </tbody>
             </thead>
         </table>
-        @else 
+        @else
         <h3>Não ha posts</h3>
         @endif
     </div>

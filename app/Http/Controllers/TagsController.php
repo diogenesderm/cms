@@ -66,7 +66,7 @@ class Tagscontroller extends Controller
     public function edit($id)
     {
         $tags = Tags::find($id);
-      
+
         return view('tags.create')->with('tag', $tags);
     }
 
@@ -95,6 +95,11 @@ class Tagscontroller extends Controller
      */
     public function destroy($id)
     {
+        $tags = Tags::find($id);
+        if ($tags->post->count() > 0) {
+            session()->flash('error', 'Tabs nao pode ser deletada porque tem posts');
+            return redirect()->back();
+        }
         $tags = Tags::find($id)->delete();
 
         session()->flash('success', 'Tags deletede successfully');
