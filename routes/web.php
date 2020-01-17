@@ -22,7 +22,7 @@ Auth::routes();
 
 Route::get('/', 'WelcomeController@index');
 
-Route::get('/blog/posts/{post}', [PostsController::class,'show'])->name('blog.show');
+Route::get('blog/posts/{post}', [PostsController::class,'show'])->name('blog.show');
 
 Route::middleware(['auth'])->group(function () {
 
